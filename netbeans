@@ -6,4 +6,3 @@ docker run -ti --rm \
            -v `pwd`:/workspace \
            $1
 
-# netbeansjdk8:ubuntu18
