@@ -7,14 +7,14 @@
 Article: http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 Repository: https://github.com/fgrehm/docker-netbeans
 
-## Running NetBean IDE from a Docker container
+## Running NetBeans IDE from a Docker container
 
 This container runs the NetBeans IDE from a Linux Docker container.
 The differences with the original version are:
 
 * the container automatically builds from Oracle JDK 8 by downloading the JDK `.tar.gz` file from Google Drive
 * builds also from Ubuntu 18.04, 
-* uses variables for `uid` and `gid`
+* uses variables for `uid` and `gid` instead of hard values
 * slightly modified the script `netbeans` to allow running other Docker tags
 
 
@@ -30,6 +30,7 @@ RUN apt-get -y update
 
 # RUN DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y libxext-dev libxrender-dev libxtst-dev
+RUN apt-get install -y firefox
 
 ADD state.xml /tmp/state.xml
 
@@ -136,9 +137,9 @@ And this other shows an example of developing a Java Swing application from the 
 
 
 
-## Adding Firefox browser
+## Adding the Firefox browser
 
-I saw that NetBeans calls Firefox for guides, tutorials and automated messages, so I decided to add Firefox to the container with this line:
+I saw that NetBeans sometimes calls **Firefox** for guides, tutorials and automated messages, so I decided to add Firefox to the container with this line in the Dockerfile:
 
 ```
 RUN apt-get install -y firefox
@@ -147,7 +148,7 @@ RUN apt-get install -y firefox
 I created a new Dockerfile `ubuntu18-ff.Dockerfile` that I build with:
 
 ```
-docker build  -f ubuntu18-ff.Dockerfile -t f0nzie/netbeans-ff-jdk8:ubuntu18 .
+docker build  -f ubuntu18-ff.Dockerfile -t f0nzie/netbeans-jdk8:ubuntu18-ff .
 ```
 
 and run with:
@@ -157,11 +158,11 @@ docker run -ti --rm \
 	-e DISPLAY=$DISPLAY \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-v `pwd`:/workspace \
-	f0nzie/netbeans-ff-jdk8:ubuntu18
+	f0nzie/netbeans-jdk8:ubuntu18-ff
 ```
 
-
-
-
+>   **Note**. Naming the image this way makes it more consistent with the tags for the automatic builds defined in DockerHub.
+>
+>   ![image-20200328155731626](assets/README/image-20200328155731626.png)
 
 
