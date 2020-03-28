@@ -1,11 +1,13 @@
 # Run Java NetBeans from a Docker container
 
 
+
+
 ## Original sources
 Article: http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 Repository: https://github.com/fgrehm/docker-netbeans
 
-## Running NetBeans IDE from a Docker container
+## Running NetBean IDE from a Docker container
 
 This container runs the NetBeans IDE from a Linux Docker container.
 The differences with the original version are:
@@ -21,7 +23,7 @@ The differences with the original version are:
 
 
 
-```
+```dockerfile
 FROM f0nzie/oracle-java-8:ubuntu18
 
 RUN apt-get -y update
@@ -134,7 +136,29 @@ And this other shows an example of developing a Java Swing application from the 
 
 
 
+## Adding Firefox browser
 
+I saw that NetBeans calls Firefox for guides, tutorials and automated messages, so I decided to add Firefox to the container with this line:
+
+```
+RUN apt-get install -y firefox
+```
+
+I created a new Dockerfile `ubuntu18-ff.Dockerfile` that I build with:
+
+```
+docker build  -f ubuntu18-ff.Dockerfile -t f0nzie/netbeans-ff-jdk8:ubuntu18 .
+```
+
+and run with:
+
+```
+docker run -ti --rm \
+	-e DISPLAY=$DISPLAY \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v `pwd`:/workspace \
+	f0nzie/netbeans-ff-jdk8:ubuntu18
+```
 
 
 
